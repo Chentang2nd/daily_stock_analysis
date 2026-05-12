@@ -128,12 +128,12 @@ class MarketAnalyzer:
         self.strategy = get_market_strategy_blueprint(self.region)
 
     def _get_review_language(self) -> str:
-        configured = normalize_report_language(
-            getattr(getattr(self, "config", None), "report_language", "zh")
-        )
+        raw = getattr(getattr(self, "config", None), "report_language", "") or ""
+        if raw:
+            return normalize_report_language(raw)
         if self.region == "us":
             return "en"
-        return configured
+        return "zh"
 
     def _get_template_review_language(self) -> str:
         return normalize_report_language(
